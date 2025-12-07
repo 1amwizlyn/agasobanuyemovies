@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AGASOBANUYE MOVIES STOCK – Watch & Download Movies</title>
+<!-- Font Awesome for film icon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-eV5q/0Hn0u3cJv1GpF6+4zNH4J4A8kO+u1D+Df1+bl9DyPn4vT3f+MKp1+vv8XzXjYn6p1z+0y0eQK7X0rP1iw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+body{margin:0;font-family:Arial;background:#0f0f0f;color:white}
+header{text-align:center;padding:20px;background:#111;border-bottom:3px solid red; display:flex; flex-direction:column; align-items:center;}
+.logo{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:28px;font-weight:bold;color:red;}
+.logo i{font-size:40px;}
+#search{width:80%;max-width:420px;padding:12px;border:none;border-radius:8px;margin-top:15px;font-size:16px}
+nav{margin-top:15px}
+nav button{padding:10px 20px;margin:5px;border:none;background:#333;color:white;border-radius:8px;cursor:pointer;font-weight:bold}
+nav button.active,nav button:hover{background:red;color:white}
+#movie-list{padding:20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:20px}
+.movie{background:#1a1a1a;padding:10px;border-radius:10px;text-align:center;border:1px solid #333}
+.movie img{width:100%;height:260px;object-fit:cover;border-radius:10px}
+.movie h3{margin:10px 0 5px;font-size:18px}
+.btn{display:block;margin:7px 0;padding:10px;border-radius:6px;font-weight:bold;text-decoration:none;color:white}
+.watch{background:red}
+.download{background:#0066ff}
+.btn:hover{opacity:.8}
+</style>
+</head>
+<body>
+
+<header>
+<!-- Website Logo with Film Icon -->
+<div class="logo">
+  <i class="fa-solid fa-film"></i>
+  AGASOBANUYE MOVIES STOCK
+</div>
+
+<input type="text" id="search" placeholder="Search movies...">
+<nav>
+<button class="cat-btn active" data-category="All">All</button>
+<button class="cat-btn" data-category="Action">Action</button>
+<button class="cat-btn" data-category="Comedy">Comedy</button>
+<button class="cat-btn" data-category="Horror">Horror</button>
+<button class="cat-btn" data-category="Drama">Drama</button>
+</nav>
+</header>
+
+<section id="movie-list"></section>
+
+<script>
+// 50 movies with real posters
+const movies = [
+  {title:"Avengers: Endgame", category:"Action", image:"https://m.media-amazon.com/images/I/81ExhpBEbHL._AC_SY679_.jpg", watch:"#", download:"#"},
+  {title:"The Dark Knight", category:"Action", image:"https://m.media-amazon.com/images/I/51k0qaHHT5L._AC_.jpg", watch:"#", download:"#"},
+  {title:"Inception", category:"Action", image:"https://m.media-amazon.com/images/I/51xkLxJIQpL._AC_.jpg", watch:"#", download:"#"},
+  {title:"Mad Max: Fury Road", category:"Action", image:"https://m.media-amazon.com/images/I/81q-5C7U7lL._AC_SY679_.jpg", watch:"#", download:"#"},
+  {title:"John Wick", category:"Action", image:"https://m.media-amazon.com/images/I/51qk5zF+SLL._AC_.jpg", watch:"#", download:"#"},
+  {title:"Jumanji: Welcome to the Jungle", category:"Comedy", image:"https://m.media-amazon.com/images/I/71x8i+Y4n2L._AC_SY679_.jpg", watch:"#", download:"#"},
+  {title:"The Hangover", category:"Comedy", image:"https://m.media-amazon.com/images/I/51v5ZpFyaFL._AC_.jpg", watch:"#", download:"#"},
+  {title:"Superbad", category:"Comedy", image:"https://m.media-amazon.com/images/I/51F4K92KyGL._AC_.jpg", watch:"#", download:"#"},
+  {title:"Step Brothers", category:"Comedy", image:"https://m.media-amazon.com/images/I/71u+36ibJ4L._AC_SY679_.jpg", watch:"#", download:"#"},
+  {title:"The Mask", category:"Comedy", image:"https://m.media-amazon.com/images/I/51z04B3STDL._AC_.jpg", watch:"#", download:"#"},
+  {title:"It", category:"Horror", image:"https://m.media-amazon.com/images/I/81IQZ2HHD-L._AC_SY679_.jpg", watch:"#", download:"#"},
+  {title:"Get Out", category:"Horror", image:"https://m.media-amazon.com/images/I/81n7oxp7O1L._AC_SY679_.jpg", watch:"#", download:"#"},
+  {title:"The Conjuring", category:"Horror", image:"https://m.media-amazon.com/images/I/71Kk7KaZwDL._AC_SY679_.jpg", watch:"#", download:"#"},
+  {title:"A Quiet Place", category:"Horror", image:"https://m.media-amazon.com/images/I/81p8d+ZlwAL._AC_SY679_.jpg", watch:"#", download:"#"},
+  {title:"Annabelle", category:"Horror", image:"https://m.media-amazon.com/images/I/81l8xwV6FvL._AC_SY679_.jpg", watch:"#", download:"#"},
+  {title:"The Godfather", category:"Drama", image:"https://m.media-amazon.com/images/I/71x2rTL5LGL._AC_SY679_.jpg", watch:"#", download:"#"},
+  {title:"Forrest Gump", category:"Drama", image:"https://m.media-amazon.com/images/I/61+GohhRl+L._AC_SY679_.jpg", watch:"#", download:"#"},
+  {title:"Fight Club", category:"Drama", image:"https://m.media-amazon.com/images/I/51v5ZpFyaFL._AC_.jpg", watch:"#", download:"#"},
+  {title:"The Shawshank Redemption", category:"Drama", image:"https://m.media-amazon.com/images/I/51NiGlapXlL._AC_.jpg", watch:"#", download:"#"},
+  {title:"Gladiator", category:"Drama", image:"https://m.media-amazon.com/images/I/51A0iZx7b4L._AC_.jpg", watch:"#", download:"#"}
+];
+
+// Duplicate existing movies to reach 50 for demo
+while (movies.length < 50) {
+  const base = movies[movies.length % 20];
+  movies.push({...base, title: base.title + " " + (movies.length+1)});
+}
+
+let filteredCategory = "All";
+
+function displayMovies(list){
+    const container = document.getElementById("movie-list");
+    container.innerHTML = "";
+    list.forEach(movie=>{
+        container.innerHTML += `
+        <div class="movie">
+            <img src="${movie.image}" alt="${movie.title}">
+            <h3>${movie.title}</h3>
+            <p>${movie.category}</p>
+            <a class="btn watch" href="${movie.watch}" target="_blank">WATCH</a>
+            <a class="btn download" href="${movie.download}" target="_blank">DOWNLOAD</a>
+        </div>
+        `;
+    });
+}
+
+document.querySelectorAll(".cat-btn").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+        filteredCategory = btn.getAttribute("data-category");
+        document.querySelectorAll(".cat-btn").forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+        filterMovies();
+    });
+});
+
+document.getElementById("search").addEventListener("input",filterMovies);
+
+function filterMovies(){
+    const searchText = document.getElementById("search").value.toLowerCase();
+    let filtered = movies;
+    if(filteredCategory!=="All") filtered = filtered.filter(movie=>movie.category===filteredCategory);
+    if(searchText) filtered = filtered.filter(movie=>movie.title.toLowerCase().includes(searchText));
+    displayMovies(filtered);
+}
+
+displayMovies(movies);
+</script>
+
+</body>
+</html>
